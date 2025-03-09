@@ -3,6 +3,13 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 import Fingertip from "fingertip";
 
+const apiKey = process.env.FINGERTIP_API_KEY;
+
+if (!apiKey) {
+  console.error("FINGERTIP_API_KEY environment variable is not set");
+  process.exit(1);
+}
+
 // Create server instance
 const server = new McpServer({
   name: "fingertip",
@@ -14,11 +21,10 @@ server.tool(
   "get-sites",
   "Get a list of sites",
   {
-    apiKey: z.string().describe("Fingertip API key"),
     pageSize: z.number().optional().describe("Number of items to return"),
     cursor: z.string().optional().describe("Pagination cursor"),
   },
-  async ({ apiKey, pageSize, cursor }) => {
+  async ({ pageSize, cursor }) => {
     try {
       const client = new Fingertip({ apiKey });
 
@@ -81,10 +87,9 @@ server.tool(
   "get-site",
   "Get a specific site by ID",
   {
-    apiKey: z.string().describe("Fingertip API key"),
     siteId: z.string().uuid().describe("Site ID"),
   },
-  async ({ apiKey, siteId }) => {
+  async ({ siteId }) => {
     try {
       const client = new Fingertip({ apiKey });
       const response = await client.api.v1.sites.retrieve(siteId);
@@ -142,7 +147,6 @@ server.tool(
   "create-site",
   "Create a new site",
   {
-    apiKey: z.string().describe("Fingertip API key"),
     name: z.string().describe("Site name"),
     slug: z.string().describe("Site slug"),
     businessType: z.string().describe("Business type"),
@@ -159,14 +163,7 @@ server.tool(
       .optional()
       .describe("Site status"),
   },
-  async ({
-    apiKey,
-    name,
-    slug,
-    businessType,
-    description,
-    status = "ENABLED",
-  }) => {
+  async ({ name, slug, businessType, description, status = "ENABLED" }) => {
     try {
       const client = new Fingertip({ apiKey });
 
@@ -215,7 +212,6 @@ server.tool(
         `Business Type: ${site.businessType}`,
         `Status: ${site.status}`,
         `Created: ${site.createdAt}`,
-        `Pages: ${site.pages?.length || 0}`,
       ].join("\n");
 
       return {
