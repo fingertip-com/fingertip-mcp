@@ -123,18 +123,7 @@ server.tool("create-site", "Create a new site", {
     slug: z.string().describe("Site slug"),
     businessType: z.string().describe("Business type"),
     description: z.string().optional().describe("Site description"),
-    status: z
-        .enum([
-        "EMPTY",
-        "UNPUBLISHED",
-        "PREVIEW",
-        "SOFT_CLAIM",
-        "ENABLED",
-        "DEMO",
-    ])
-        .optional()
-        .describe("Site status"),
-}, async ({ name, slug, businessType, description, status = "ENABLED" }) => {
+}, async ({ name, slug, businessType, description }) => {
     try {
         const client = new Fingertip({ apiKey });
         // Create a minimal site with a home page
@@ -143,18 +132,16 @@ server.tool("create-site", "Create a new site", {
             slug,
             businessType,
             description: description || null,
-            status,
-            // Every site needs at least one page
+            status: "UNPUBLISHED",
             pages: [
                 {
-                    slug: "home",
-                    name: "Home",
+                    slug: "index",
+                    name,
+                    description: description || null,
                     pageTheme: {
-                        content: null,
-                        isComponent: false,
+                        content: {},
                         componentPageThemeId: null,
                     },
-                    blocks: [],
                 },
             ],
         };
@@ -176,7 +163,6 @@ server.tool("create-site", "Create a new site", {
             `Name: ${site.name}`,
             `Slug: ${site.slug}`,
             `Business Type: ${site.businessType}`,
-            `Status: ${site.status}`,
             `Created: ${site.createdAt}`,
         ].join("\n");
         return {

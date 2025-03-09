@@ -151,19 +151,8 @@ server.tool(
     slug: z.string().describe("Site slug"),
     businessType: z.string().describe("Business type"),
     description: z.string().optional().describe("Site description"),
-    status: z
-      .enum([
-        "EMPTY",
-        "UNPUBLISHED",
-        "PREVIEW",
-        "SOFT_CLAIM",
-        "ENABLED",
-        "DEMO",
-      ])
-      .optional()
-      .describe("Site status"),
   },
-  async ({ name, slug, businessType, description, status = "ENABLED" }) => {
+  async ({ name, slug, businessType, description }) => {
     try {
       const client = new Fingertip({ apiKey });
 
@@ -173,18 +162,16 @@ server.tool(
         slug,
         businessType,
         description: description || null,
-        status,
-        // Every site needs at least one page
+        status: "UNPUBLISHED" as const,
         pages: [
           {
-            slug: "home",
-            name: "Home",
+            slug: "index",
+            name,
+            description: description || null,
             pageTheme: {
-              content: null,
-              isComponent: false,
+              content: {},
               componentPageThemeId: null,
             },
-            blocks: [],
           },
         ],
       };
@@ -210,7 +197,6 @@ server.tool(
         `Name: ${site.name}`,
         `Slug: ${site.slug}`,
         `Business Type: ${site.businessType}`,
-        `Status: ${site.status}`,
         `Created: ${site.createdAt}`,
       ].join("\n");
 
