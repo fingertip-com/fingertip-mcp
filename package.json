@@ -1,22 +1,38 @@
 {
   "name": "@fingertip/mcp",
-  "version": "1.0.4",
+  "description": "MCP server for Fingertip API integration",
+  "version": "1.0.5",
   "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "fingertip-mcp": "build/index.js"
   },
   "scripts": {
-    "build": "tsc && shx chmod +x build/*.js",
+    "build": "tsc && shx chmod +x dist/*.js",
     "prepare": "npm run build",
     "watch": "tsc --watch"
   },
   "files": [
-    "build"
+    "dist"
   ],
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fingertip-com/fingertip-mcp.git"
+  },
+  "keywords": [
+    "mcp",
+    "todoist",
+    "claude",
+    "ai",
+    "task-management"
+  ],
+  "author": "fingertip-com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fingertip-com/fingertip-mcp/issues"
+  },
+  "homepage": "https://github.com/fingertip-com/fingertip-mcp#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.6.1",
     "fingertip": "^0.6.0",

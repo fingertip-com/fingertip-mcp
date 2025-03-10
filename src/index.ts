@@ -222,14 +222,13 @@ server.tool(
   },
 );
 
-// Start the server
-async function main() {
+async function runServer() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
   console.error("Fingertip MCP Server running on stdio");
 }
 
-main().catch((error) => {
-  console.error("Fatal error in main():", error);
+runServer().catch((error) => {
+  console.error("Fatal error running server:", error);
   process.exit(1);
 });
