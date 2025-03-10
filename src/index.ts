@@ -30,7 +30,7 @@ server.tool(
     try {
       const client = new Fingertip({ apiKey });
 
-      const params = {};
+      const params: Record<string, any> = {};
       if (pageSize) params.pageSize = pageSize.toString();
       if (cursor) params.cursor = cursor;
 
@@ -164,7 +164,7 @@ server.tool(
         slug,
         businessType,
         description: description || null,
-        status: "UNPUBLISHED",
+        status: "UNPUBLISHED" as const,
         pages: [
           {
             slug: "index",
@@ -200,7 +200,7 @@ server.tool(
         `Slug: ${site.slug}`,
         `Business Type: ${site.businessType}`,
         `Created: ${site.createdAt}`,
-        `URL: https://fingertip.com/${site.slug}`,
+        `URL: https://fingertip.com/${site.updatedAt}`,
       ].join("\n");
 
       return {

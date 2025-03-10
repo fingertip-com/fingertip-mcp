@@ -165,6 +165,7 @@ server.tool("create-site", "Create a new site", {
             `Slug: ${site.slug}`,
             `Business Type: ${site.businessType}`,
             `Created: ${site.createdAt}`,
+            `URL: https://fingertip.com/${site.updatedAt}`,
         ].join("\n");
         return {
             content: [
