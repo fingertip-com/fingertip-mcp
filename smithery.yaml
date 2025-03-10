@@ -1,0 +1,25 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - fingertipApiKey
+    properties:
+      fingertipApiKey:
+        type: string
+        description: API key for authenticating with the Fingertip API
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({
+      command: 'node',
+      args: ['dist/index.js'],
+      env: {
+        FINGERTIP_API_KEY: config.fingertipApiKey
+      }
+    })
+  exampleConfig:
+    fingertipApiKey: your-fingertip-api-key-here

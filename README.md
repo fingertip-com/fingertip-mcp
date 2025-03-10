@@ -1,11 +1,21 @@
 # @fingertip/mcp
 
+[![smithery badge](https://smithery.ai/badge/@fingertip-com/fingertip-mcp)](https://smithery.ai/server/@fingertip-com/fingertip-mcp)
+
 A Model Context Protocol (MCP) server implementation for the Fingertip API, allowing AI assistants to interact with Fingertip's site management capabilities.
 
 ## Installation
 
 ```bash
 npm install -g @fingertip/mcp
+```
+
+## Installing via Smithery
+
+To install fingertip-mcp for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@fingertip-com/fingertip-mcp):
+
+```bash
+npx -y @smithery/cli install @fingertip-com/fingertip-mcp --client claude
 ```
 
 ## Usage
