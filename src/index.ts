@@ -200,6 +200,7 @@ server.tool(
         `Slug: ${site.slug}`,
         `Business Type: ${site.businessType}`,
         `Created: ${site.createdAt}`,
+        `URL: https://fingertip.com/${site.slug}`,
       ].join("\n");
 
       return {
