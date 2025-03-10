@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
@@ -164,6 +165,7 @@ server.tool("create-site", "Create a new site", {
             `Slug: ${site.slug}`,
             `Business Type: ${site.businessType}`,
             `Created: ${site.createdAt}`,
+            `URL: https://fingertip.com/${site.updatedAt}`,
         ].join("\n");
         return {
             content: [
