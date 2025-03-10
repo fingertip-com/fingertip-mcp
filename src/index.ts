@@ -30,7 +30,7 @@ server.tool(
     try {
       const client = new Fingertip({ apiKey });
 
-      const params: Record<string, any> = {};
+      const params = {};
       if (pageSize) params.pageSize = pageSize.toString();
       if (cursor) params.cursor = cursor;
 
@@ -164,7 +164,7 @@ server.tool(
         slug,
         businessType,
         description: description || null,
-        status: "UNPUBLISHED" as const,
+        status: "UNPUBLISHED",
         pages: [
           {
             slug: "index",
