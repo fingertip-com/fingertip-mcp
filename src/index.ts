@@ -110,7 +110,28 @@ server.tool(
       }
 
       const site = response.site;
-      const pagesInfo = site.pages ? `\nPages: ${site.pages.length}` : "";
+
+      // Create detailed page information
+      let pagesInfo = "";
+      if (site.pages && site.pages.length > 0) {
+        const pagesDetails = site.pages.map((page, index) => {
+          return [
+            `\n---- Page ${index + 1} ----`,
+            `ID: ${page.id}`,
+            `Name: ${page.name || "Unnamed"}`,
+            `Slug: ${page.slug}`,
+            `Description: ${page.description || "None"}`,
+            `Position: ${page.position || "Not specified"}`,
+            `Created: ${page.createdAt}`,
+            `Updated: ${page.updatedAt}`,
+            `Theme ID: ${page.pageThemeId || "None"}`,
+          ].join("\n");
+        });
+
+        pagesInfo = `\n\nPages (${site.pages.length} total):\n${pagesDetails.join("\n")}`;
+      } else {
+        pagesInfo = "\n\nNo pages found for this site.";
+      }
 
       const siteText = [
         `Site Details:`,
@@ -120,6 +141,9 @@ server.tool(
         `Description: ${site.description || "None"}`,
         `Status: ${site.status}`,
         `Business Type: ${site.businessType || "None"}`,
+        `Home Page ID: ${site.homePageId || "None"}`,
+        `Workspace ID: ${site.workspaceId || "None"}`,
+        `Time Zone: ${site.timeZone || "None"}`,
         `Created: ${site.createdAt}`,
         `Updated: ${site.updatedAt}`,
         pagesInfo,
@@ -226,8 +250,6 @@ server.tool(
     }
   },
 );
-
-// Add these tool functions to your existing MCP server
 
 // GET page by ID
 server.tool(
