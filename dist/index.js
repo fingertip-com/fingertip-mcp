@@ -25,7 +25,7 @@ server.tool("get-sites", "Get a list of sites", {
             content: [
                 {
                     type: "text",
-                    text: JSON.stringify(result, null, 2),
+                    text: JSON.stringify(result),
                 },
             ],
         };
@@ -52,7 +52,7 @@ server.tool("get-site", "Get a specific site by ID", {
             content: [
                 {
                     type: "text",
-                    text: JSON.stringify(result, null, 2),
+                    text: JSON.stringify(result),
                 },
             ],
         };
@@ -101,7 +101,7 @@ server.tool("create-site", "Create a new site", {
             content: [
                 {
                     type: "text",
-                    text: JSON.stringify(result, null, 2),
+                    text: JSON.stringify(result),
                 },
             ],
         };
@@ -129,7 +129,7 @@ server.tool("get-page", "Get a specific page by ID", {
             content: [
                 {
                     type: "text",
-                    text: JSON.stringify(result, null, 2),
+                    text: JSON.stringify(result),
                 },
             ],
         };
@@ -150,7 +150,6 @@ server.tool("get-page", "Get a specific page by ID", {
 server.tool("update-page", "Update a specific page", {
     pageId: z.string().uuid().describe("Page ID"),
     name: z.string().optional().describe("Page name"),
-    slug: z.string().optional().describe("Page slug"),
     description: z.string().optional().describe("Page description"),
     position: z
         .number()
@@ -164,7 +163,7 @@ server.tool("update-page", "Update a specific page", {
             content: [
                 {
                     type: "text",
-                    text: JSON.stringify(result, null, 2),
+                    text: JSON.stringify(result),
                 },
             ],
         };
@@ -192,7 +191,7 @@ server.tool("get-page-blocks", "Get all blocks for a specific page", {
             content: [
                 {
                     type: "text",
-                    text: JSON.stringify(result, null, 2),
+                    text: JSON.stringify(result),
                 },
             ],
         };
@@ -220,7 +219,7 @@ server.tool("get-page-theme", "Get the theme for a specific page", {
             content: [
                 {
                     type: "text",
-                    text: JSON.stringify(result, null, 2),
+                    text: JSON.stringify(result),
                 },
             ],
         };
@@ -240,7 +239,10 @@ server.tool("get-page-theme", "Get the theme for a specific page", {
 // PATCH page theme
 server.tool("update-page-theme", "Update the theme for a specific page", {
     pageId: z.string().uuid().describe("Page ID"),
-    content: z.any().optional().describe("Theme content configuration"),
+    content: z
+        .string()
+        .optional()
+        .describe("Theme content configuration as JSON string"),
     isComponent: z
         .boolean()
         .optional()
@@ -251,15 +253,33 @@ server.tool("update-page-theme", "Update the theme for a specific page", {
         .nullable()
         .optional()
         .describe("ID of the parent component theme"),
-}, async ({ pageId, ...updateData }) => {
+}, async ({ pageId, content, ...restUpdateData }) => {
     try {
         const client = new Fingertip({ apiKey });
+        const updateData = {
+            ...restUpdateData,
+        };
+        if (content) {
+            try {
+                updateData.content = JSON.parse(content);
+            }
+            catch (parseError) {
+                return {
+                    content: [
+                        {
+                            type: "text",
+                            text: `Error parsing content JSON: ${parseError.message}`,
+                        },
+                    ],
+                };
+            }
+        }
         const result = await client.api.v1.pages.theme.update(pageId, updateData);
         return {
             content: [
                 {
                     type: "text",
-                    text: JSON.stringify(result, null, 2),
+                    text: JSON.stringify(result),
                 },
             ],
         };
@@ -280,7 +300,10 @@ server.tool("update-page-theme", "Update the theme for a specific page", {
 server.tool("update-block", "Update a specific block", {
     blockId: z.string().uuid().describe("Block ID"),
     name: z.string().optional().describe("Block name"),
-    content: z.any().optional().describe("Block content"),
+    content: z
+        .string()
+        .optional()
+        .describe("Block content configuration as JSON string"),
     kind: z.string().optional().describe("Block kind/type"),
     isComponent: z
         .boolean()
@@ -292,15 +315,34 @@ server.tool("update-block", "Update a specific block", {
         .nullable()
         .optional()
         .describe("ID of the component block"),
-}, async ({ blockId, ...updateData }) => {
+}, async ({ blockId, content, ...restUpdateData }) => {
     try {
         const client = new Fingertip({ apiKey });
+        // Parse the content if provided as a string
+        const updateData = {
+            ...restUpdateData,
+        };
+        if (content) {
+            try {
+                updateData.content = JSON.parse(content);
+            }
+            catch (parseError) {
+                return {
+                    content: [
+                        {
+                            type: "text",
+                            text: `Error parsing content JSON: ${parseError.message}`,
+                        },
+                    ],
+                };
+            }
+        }
         const result = await client.api.v1.blocks.update(blockId, updateData);
         return {
             content: [
                 {
                     type: "text",
-                    text: JSON.stringify(result, null, 2),
+                    text: JSON.stringify(result),
                 },
             ],
         };

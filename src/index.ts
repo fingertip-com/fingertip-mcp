@@ -35,7 +35,7 @@ server.tool(
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify(result),
           },
         ],
       };
@@ -68,7 +68,7 @@ server.tool(
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify(result),
           },
         ],
       };
@@ -125,7 +125,7 @@ server.tool(
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify(result),
           },
         ],
       };
@@ -159,7 +159,7 @@ server.tool(
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify(result),
           },
         ],
       };
@@ -184,7 +184,6 @@ server.tool(
   {
     pageId: z.string().uuid().describe("Page ID"),
     name: z.string().optional().describe("Page name"),
-    slug: z.string().optional().describe("Page slug"),
     description: z.string().optional().describe("Page description"),
     position: z
       .number()
@@ -200,7 +199,7 @@ server.tool(
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify(result),
           },
         ],
       };
@@ -234,7 +233,7 @@ server.tool(
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify(result),
           },
         ],
       };
@@ -268,7 +267,7 @@ server.tool(
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify(result),
           },
         ],
       };
@@ -292,7 +291,10 @@ server.tool(
   "Update the theme for a specific page",
   {
     pageId: z.string().uuid().describe("Page ID"),
-    content: z.any().optional().describe("Theme content configuration"),
+    content: z
+      .string()
+      .optional()
+      .describe("Theme content configuration as JSON string"),
     isComponent: z
       .boolean()
       .optional()
@@ -304,16 +306,36 @@ server.tool(
       .optional()
       .describe("ID of the parent component theme"),
   },
-  async ({ pageId, ...updateData }) => {
+  async ({ pageId, content, ...restUpdateData }) => {
     try {
       const client = new Fingertip({ apiKey });
+
+      const updateData: any = {
+        ...restUpdateData,
+      };
+
+      if (content) {
+        try {
+          updateData.content = JSON.parse(content);
+        } catch (parseError: any) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `Error parsing content JSON: ${parseError.message}`,
+              },
+            ],
+          };
+        }
+      }
+
       const result = await client.api.v1.pages.theme.update(pageId, updateData);
 
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify(result),
           },
         ],
       };
@@ -338,7 +360,10 @@ server.tool(
   {
     blockId: z.string().uuid().describe("Block ID"),
     name: z.string().optional().describe("Block name"),
-    content: z.any().optional().describe("Block content"),
+    content: z
+      .string()
+      .optional()
+      .describe("Block content configuration as JSON string"),
     kind: z.string().optional().describe("Block kind/type"),
     isComponent: z
       .boolean()
@@ -351,16 +376,37 @@ server.tool(
       .optional()
       .describe("ID of the component block"),
   },
-  async ({ blockId, ...updateData }) => {
+  async ({ blockId, content, ...restUpdateData }) => {
     try {
       const client = new Fingertip({ apiKey });
+
+      // Parse the content if provided as a string
+      const updateData: any = {
+        ...restUpdateData,
+      };
+
+      if (content) {
+        try {
+          updateData.content = JSON.parse(content);
+        } catch (parseError: any) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `Error parsing content JSON: ${parseError.message}`,
+              },
+            ],
+          };
+        }
+      }
+
       const result = await client.api.v1.blocks.update(blockId, updateData);
 
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify(result),
           },
         ],
       };
