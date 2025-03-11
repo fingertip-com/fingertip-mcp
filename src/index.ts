@@ -307,7 +307,7 @@ server.tool(
       const client = new Fingertip({ apiKey });
 
       // Construct update payload with only provided fields
-      const updateData = {};
+      const updateData: any = {};
       if (name !== undefined) updateData.name = name;
       if (slug !== undefined) updateData.slug = slug;
       if (description !== undefined) updateData.description = description;
@@ -503,7 +503,7 @@ server.tool(
       const client = new Fingertip({ apiKey });
 
       // Construct update payload with only provided fields
-      const updateData = {};
+      const updateData: any = {};
       if (content !== undefined) updateData.content = content;
       if (isComponent !== undefined) updateData.isComponent = isComponent;
       if (componentPageThemeId !== undefined)
@@ -582,7 +582,7 @@ server.tool(
       const client = new Fingertip({ apiKey });
 
       // Construct update payload with only provided fields
-      const updateData = {};
+      const updateData: any = {};
       if (name !== undefined) updateData.name = name;
       if (content !== undefined) updateData.content = content;
       if (kind !== undefined) updateData.kind = kind;
