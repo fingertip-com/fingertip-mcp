@@ -17,7 +17,8 @@ const server = new McpServer({
 server.tool("get-sites", "Get a list of sites", {
     pageSize: z.number().optional().describe("Number of items to return"),
     cursor: z.string().optional().describe("Pagination cursor"),
-}, async ({ pageSize, cursor }) => {
+    search: z.string().optional().describe("Search query"),
+}, async ({ pageSize, cursor, search }) => {
     try {
         const client = new Fingertip({ apiKey });
         const params = {};
@@ -25,6 +26,8 @@ server.tool("get-sites", "Get a list of sites", {
             params.pageSize = pageSize.toString();
         if (cursor)
             params.cursor = cursor;
+        if (search)
+            params.search = search;
         const sitesData = await client.api.v1.sites.list(params);
         if (!sitesData || !sitesData.items) {
             return {

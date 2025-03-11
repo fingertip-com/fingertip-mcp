@@ -25,14 +25,16 @@ server.tool(
   {
     pageSize: z.number().optional().describe("Number of items to return"),
     cursor: z.string().optional().describe("Pagination cursor"),
+    search: z.string().optional().describe("Search query"),
   },
-  async ({ pageSize, cursor }) => {
+  async ({ pageSize, cursor, search }) => {
     try {
       const client = new Fingertip({ apiKey });
 
       const params: Record<string, any> = {};
       if (pageSize) params.pageSize = pageSize.toString();
       if (cursor) params.cursor = cursor;
+      if (search) params.search = search;
 
       const sitesData = await client.api.v1.sites.list(params);
 
