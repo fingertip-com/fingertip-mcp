@@ -23,7 +23,6 @@ server.tool(
   "get-sites",
   "Get a list of sites",
   {
-    pageSize: z.number().optional().describe("Number of items to return"),
     cursor: z.string().optional().describe("Pagination cursor"),
     search: z.string().optional().describe("Search query"),
   },
@@ -115,6 +114,7 @@ server.tool(
               content: {},
               componentPageThemeId: null,
             },
+            blocks: [],
           },
         ],
       };

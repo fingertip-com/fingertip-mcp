@@ -15,7 +15,6 @@ const server = new McpServer({
 });
 // Register Fingertip tools for sites
 server.tool("get-sites", "Get a list of sites", {
-    pageSize: z.number().optional().describe("Number of items to return"),
     cursor: z.string().optional().describe("Pagination cursor"),
     search: z.string().optional().describe("Search query"),
 }, async (params) => {
@@ -93,6 +92,7 @@ server.tool("create-site", "Create a new site", {
                         content: {},
                         componentPageThemeId: null,
                     },
+                    blocks: [],
                 },
             ],
         };
