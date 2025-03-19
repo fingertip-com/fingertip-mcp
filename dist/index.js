@@ -16,8 +16,12 @@ const server = new McpServer({
 });
 // Register Fingertip tools for sites
 server.tool('get-sites', 'Get a list of sites', {
-    cursor: z.string().optional().describe('Pagination cursor'),
-    search: z.string().optional().describe('Search query'),
+    cursor: z.string().optional().describe("Pagination cursor"),
+    search: z.string().optional().describe("Search query"),
+    pageSize: z.string().optional().describe("Number of items per page"),
+    workspaceId: z.string().uuid().optional().describe("Filter sites by workspace ID"),
+    sortBy: z.enum(["createdAt", "updatedAt"]).optional().describe("Field to sort by"),
+    sortDirection: z.enum(["asc", "desc"]).optional().describe("Sort direction"),
 }, async (params) => {
     try {
         const client = new Fingertip({ apiKey });
@@ -244,16 +248,6 @@ server.tool('update-page-theme', 'Update the theme for a specific page', {
         .string()
         .optional()
         .describe('Theme content configuration as JSON string'),
-    isComponent: z
-        .boolean()
-        .optional()
-        .describe('Whether this theme is a component'),
-    componentPageThemeId: z
-        .string()
-        .uuid()
-        .nullable()
-        .optional()
-        .describe('ID of the parent component theme'),
 }, async ({ pageId, content, ...restUpdateData }) => {
     try {
         const client = new Fingertip({ apiKey });
@@ -306,16 +300,6 @@ server.tool('update-block', 'Update a specific block', {
         .optional()
         .describe('Block content configuration as JSON string'),
     kind: z.string().optional().describe('Block kind/type'),
-    isComponent: z
-        .boolean()
-        .optional()
-        .describe('Whether this block is a component'),
-    componentBlockId: z
-        .string()
-        .uuid()
-        .nullable()
-        .optional()
-        .describe('ID of the component block'),
 }, async ({ blockId, content, ...restUpdateData }) => {
     try {
         const client = new Fingertip({ apiKey });
