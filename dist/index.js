@@ -20,7 +20,7 @@ server.tool("get-sites", "Get a list of sites", {
 }, async (params) => {
     try {
         const client = new Fingertip({ apiKey });
-        const result = await client.api.v1.sites.list(params);
+        const result = await client.v1.sites.list(params);
         return {
             content: [
                 {
@@ -47,7 +47,7 @@ server.tool("get-site", "Get a specific site by ID", {
 }, async ({ siteId }) => {
     try {
         const client = new Fingertip({ apiKey });
-        const result = await client.api.v1.sites.retrieve(siteId);
+        const result = await client.v1.sites.retrieve(siteId);
         return {
             content: [
                 {
@@ -96,7 +96,7 @@ server.tool("create-site", "Create a new site", {
                 },
             ],
         };
-        const result = await client.api.v1.sites.create(siteData);
+        const result = await client.v1.sites.create(siteData);
         return {
             content: [
                 {
@@ -124,7 +124,7 @@ server.tool("get-page", "Get a specific page by ID", {
 }, async ({ pageId }) => {
     try {
         const client = new Fingertip({ apiKey });
-        const result = await client.api.v1.pages.retrieve(pageId);
+        const result = await client.v1.pages.retrieve(pageId);
         return {
             content: [
                 {
@@ -158,7 +158,7 @@ server.tool("update-page", "Update a specific page", {
 }, async ({ pageId, ...updateData }) => {
     try {
         const client = new Fingertip({ apiKey });
-        const result = await client.api.v1.pages.update(pageId, updateData);
+        const result = await client.v1.pages.update(pageId, updateData);
         return {
             content: [
                 {
@@ -186,7 +186,7 @@ server.tool("get-page-blocks", "Get all blocks for a specific page", {
 }, async ({ pageId }) => {
     try {
         const client = new Fingertip({ apiKey });
-        const result = await client.api.v1.pages.blocks.list(pageId);
+        const result = await client.v1.pages.blocks.list(pageId);
         return {
             content: [
                 {
@@ -214,7 +214,7 @@ server.tool("get-page-theme", "Get the theme for a specific page", {
 }, async ({ pageId }) => {
     try {
         const client = new Fingertip({ apiKey });
-        const result = await client.api.v1.pages.theme.retrieve(pageId);
+        const result = await client.v1.pages.theme.retrieve(pageId);
         return {
             content: [
                 {
@@ -274,7 +274,7 @@ server.tool("update-page-theme", "Update the theme for a specific page", {
                 };
             }
         }
-        const result = await client.api.v1.pages.theme.update(pageId, updateData);
+        const result = await client.v1.pages.theme.update(pageId, updateData);
         return {
             content: [
                 {
@@ -337,7 +337,7 @@ server.tool("update-block", "Update a specific block", {
                 };
             }
         }
-        const result = await client.api.v1.blocks.update(blockId, updateData);
+        const result = await client.v1.blocks.update(blockId, updateData);
         return {
             content: [
                 {
