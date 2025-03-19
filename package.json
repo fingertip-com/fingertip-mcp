@@ -9,11 +9,9 @@
     "fingertip-mcp": "dist/index.js"
   },
   "scripts": {
-    "build": "tsc && babel dist --out-dir dist --out-file-extension .js && shx chmod +x dist/*.js",
+    "build": "tsc && shx chmod +x dist/*.js",
     "prepare": "npm run build",
     "watch": "tsc --watch",
-    "process-deps": "babel node_modules/@modelcontextprotocol node_modules/zod-to-json-schema --out-dir node_modules-processed && shx rm -rf node_modules/@modelcontextprotocol node_modules/zod-to-json-schema && shx cp -r node_modules-processed/* node_modules/ && shx rm -rf node_modules-processed",
-    "postinstall": "npm run process-deps",
     "check:formatting": "prettier --check . --ignore-path .checkignore",
     "check:linting": "eslint . --ignore-path .checkignore",
     "check:types": "tsc --noEmit",
@@ -43,8 +41,8 @@
   "homepage": "https://github.com/fingertip-com/fingertip-mcp#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.6.1",
-    "axios": "^1.8.4",
     "fingertip": "^0.12.0",
+    "node-fetch-native": "^1.6.6",
     "zod": "^3.24.2"
   },
   "devDependencies": {
