@@ -29,7 +29,7 @@ server.tool(
   async (params) => {
     try {
       const client = new Fingertip({ apiKey });
-      const result = await client.api.v1.sites.list(params);
+      const result = await client.v1.sites.list(params);
 
       return {
         content: [
@@ -62,7 +62,7 @@ server.tool(
   async ({ siteId }) => {
     try {
       const client = new Fingertip({ apiKey });
-      const result = await client.api.v1.sites.retrieve(siteId);
+      const result = await client.v1.sites.retrieve(siteId);
 
       return {
         content: [
@@ -119,7 +119,7 @@ server.tool(
         ],
       };
 
-      const result = await client.api.v1.sites.create(siteData);
+      const result = await client.v1.sites.create(siteData);
 
       return {
         content: [
@@ -153,7 +153,7 @@ server.tool(
   async ({ pageId }) => {
     try {
       const client = new Fingertip({ apiKey });
-      const result = await client.api.v1.pages.retrieve(pageId);
+      const result = await client.v1.pages.retrieve(pageId);
 
       return {
         content: [
@@ -193,7 +193,7 @@ server.tool(
   async ({ pageId, ...updateData }) => {
     try {
       const client = new Fingertip({ apiKey });
-      const result = await client.api.v1.pages.update(pageId, updateData);
+      const result = await client.v1.pages.update(pageId, updateData);
 
       return {
         content: [
@@ -227,7 +227,7 @@ server.tool(
   async ({ pageId }) => {
     try {
       const client = new Fingertip({ apiKey });
-      const result = await client.api.v1.pages.blocks.list(pageId);
+      const result = await client.v1.pages.blocks.list(pageId);
 
       return {
         content: [
@@ -261,7 +261,7 @@ server.tool(
   async ({ pageId }) => {
     try {
       const client = new Fingertip({ apiKey });
-      const result = await client.api.v1.pages.theme.retrieve(pageId);
+      const result = await client.v1.pages.theme.retrieve(pageId);
 
       return {
         content: [
@@ -329,7 +329,7 @@ server.tool(
         }
       }
 
-      const result = await client.api.v1.pages.theme.update(pageId, updateData);
+      const result = await client.v1.pages.theme.update(pageId, updateData);
 
       return {
         content: [
@@ -400,7 +400,7 @@ server.tool(
         }
       }
 
-      const result = await client.api.v1.blocks.update(blockId, updateData);
+      const result = await client.v1.blocks.update(blockId, updateData);
 
       return {
         content: [
