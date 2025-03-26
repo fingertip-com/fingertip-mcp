@@ -1,7 +1,7 @@
 {
   "name": "@fingertip/mcp",
   "description": "MCP server for Fingertip API integration",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
