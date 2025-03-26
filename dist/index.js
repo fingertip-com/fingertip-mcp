@@ -354,6 +354,75 @@ server.tool("update-block", "Update a specific block", {
         };
     }
 });
+// POST block (create block)
+server.tool("create-block", "Create a new block within a specified page", {
+    pageId: z.string().uuid().describe("ID of the page to create a block in"),
+    name: z.string().describe("Name of the block"),
+    content: z
+        .string()
+        .optional()
+        .describe("Block content configuration as JSON string"),
+    kind: z.string().describe("Type or category of the block"),
+    isComponent: z
+        .boolean()
+        .optional()
+        .default(false)
+        .describe("Whether this block is a component"),
+    componentBlockId: z
+        .string()
+        .uuid()
+        .optional()
+        .nullable()
+        .describe("ID of the component block if this is an instance"),
+}, async ({ pageId, content, name, kind, isComponent, componentBlockId }) => {
+    try {
+        const client = new Fingertip({ apiKey });
+        // Prepare request data
+        const blockData = {
+            name,
+            kind,
+            isComponent: isComponent || false,
+            componentBlockId,
+        };
+        // Parse the content if provided as a string
+        if (content) {
+            try {
+                blockData.content = JSON.parse(content);
+            }
+            catch (parseError) {
+                return {
+                    content: [
+                        {
+                            type: "text",
+                            text: `Error parsing content JSON: ${parseError.message}`,
+                        },
+                    ],
+                };
+            }
+        }
+        // Create the block
+        const result = await client.v1.pages.blocks.create(pageId, blockData);
+        return {
+            content: [
+                {
+                    type: "text",
+                    text: JSON.stringify(result),
+                },
+            ],
+        };
+    }
+    catch (error) {
+        console.error("Error:", error);
+        return {
+            content: [
+                {
+                    type: "text",
+                    text: `Error: ${error.message}`,
+                },
+            ],
+        };
+    }
+});
 async function runServer() {
     const transport = new StdioServerTransport();
     await server.connect(transport);
